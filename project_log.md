@@ -1,0 +1,75 @@
+# Project log
+
+A record of what I did, why I did it, and what I learned along the way. Newest entries at the top.
+
+I'm keeping this because the reasoning behind a decision is easy to forget, and it's often more interesting than the decision itself.
+
+---
+
+## 26 September 2026 - getting started
+
+### Choosing the topic
+
+**What:** Picked bus delays in the Lisbon Metropolitan Area as the topic.
+
+**Why:** I wanted a time series project with real data that could be very useful for companies and, above all, for people! As a public transport user outside Lisbon, I can track some buses using the Coimbra SMTUC app, but having arrival predictions would be very useful and could help understand delays patterns!
+
+### Exploring before collecting
+
+**What:** Looked at the raw API responses in the browser before writing any collection code.
+
+**Why:** I didn't want to build a data pipeline around assumptions. Better to see what the data actually looks like first.
+
+**What I found:**
+
+- There's an endpoint that gives, for each stop, both the planned and the actual arrival time of every bus. That means delays can be calculated directly.
+- Many arrivals have no actual arrival time. Still don't know why.
+- IDs have a strange prefix like `[LA77N]` that doesn't appear everywhere.
+- The metrics include daily passenger numbers per line since January 2024. An unexpected bonus: a ready-made time series.
+
+### Writing a data dictionary
+
+**What:** Created [`DATA_DICTIONARY.md`](DATA_DICTIONARY.md) with every variable, what it means, and what's still unclear.
+
+**Why:** To understand the structure before using the data, and to have one place to check when I forget what something means. It also made clear that the official docs aren't always accurate.
+
+### Downloading the timetable (GTFS)
+
+**What:** Downloaded the full timetable file and looked at its structure.
+
+**What I found:**
+
+- It's big: almost 900 MB unzipped, with 9 million rows in `stop_times.txt`.
+- **The `[LA77N]` mystery is solved:** it's the operator code. The four operators are also known by numbers (41 to 44), which show up in the metrics and bus IDs.
+- **Timetables change.** Each operator has its own plan with an end date, and one of them switches on 1 October. Since the GTFS only keeps the current plan, I'll need to save copies over time.
+- One operator names its services in a readable way (`ESC_DU` = school term weekday). The other three just use numbers.
+
+### Defining the questions
+
+**What:** Wrote [`QUESTIONS.md`](QUESTIONS.md) with the main question and the smaller ones behind it.
+
+**Why:** I was about to jump into a notebook and started thinking about a star schema. But the schema depends on what I want to answer, so the questions had to come first.
+
+**Main question:** How reliable are Carris Metropolitana buses, and can delays be predicted?
+
+### Next steps
+
+- [ ] Investigate the missing arrival times in a notebook
+- [ ] Adjust and start the data collection (arrivals, weekly GTFS copy, trips run)
+- [ ] Explore the passenger data while the delay data builds up
+
+---
+
+<!--
+Template for new entries:
+
+## DD Month YYYY – Short title
+
+### What I did
+**What:**
+**Why:**
+**What I found:**
+
+### Next steps
+- [ ]
+-->

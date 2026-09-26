@@ -2,7 +2,7 @@
 
 This file explains the data behind this project: where it comes from, what each variable means, and what I still haven't figured out.
 
-All the data is open data published by [Carris Metropolitana](https://carrismetropolitana.pt/open-data), the bus network of the Lisbon Metropolitan Area. This project is independent and not affiliated with them.
+All the data is open data published by [Carris Metropolitana](https://carrismetropolitana.pt/open-data), the bus network of the Lisbon Metropolitan Area. **This project is independent and not affiliated with them**.
 
 I built this from the [official API docs](https://github.com/carrismetropolitana/api), the [GTFS standard](https://gtfs.org/documentation/schedule/reference/), and by looking at the real data. The docs aren't always up to date, so anything I haven't confirmed is marked as an open question.
 
