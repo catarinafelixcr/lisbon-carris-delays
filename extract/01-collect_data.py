@@ -33,7 +33,7 @@ POLL_INTERVAL = 10           # seconds between calls
 SAVE_INTERVAL = 60           # seconds between saves (1 min)
 DAILY_CHECK_INTERVAL = 3600  # seconds between checks for gtfs / trips run (1 hour)
 
-BASE_DATA_DIR = Path(__file__).resolve().parent / "data" / "raw"
+BASE_DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "raw"
 VEHICLES_DIR = BASE_DATA_DIR / "vehicles"
 GTFS_DIR = BASE_DATA_DIR / "gtfs"
 SERVICE_DIR = BASE_DATA_DIR / "service"

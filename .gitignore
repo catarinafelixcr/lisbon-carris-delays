@@ -1,0 +1,32 @@
+# ---------- project data ----------
+# collected data is too big for github and can't be shared as-is
+data/
+
+# half written files from the collector
+*.part
+
+# ---------- python ----------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# virtual environments
+.venv/
+venv/
+env/
+
+# secrets, in case i ever use an api key
+.env
+
+# ---------- jupyter ----------
+.ipynb_checkpoints/
+
+# ---------- editors ----------
+.vscode/
+.idea/
+
+# ---------- system files ----------
+.DS_Store
+Thumbs.db
+desktop.ini
