@@ -4,7 +4,39 @@ A record of what I did, why I did it, and what I learned along the way. Newest e
 
 I'm keeping this because the reasoning behind a decision is easy to forget, and it's often more interesting than the decision itself.
 
+### known limitations
+- the data is collected on my own pc, so there will be gaps when it's off or offline. if gaps happen at the same hours often, the data will be biased towards the hours i did collect
+- the collection only covers a few weeks or months, so the model won't see things like a full summer or christmas holidays. results only hold for the period collected
+- gaps are tracked in `poll_log.csv`, so they can be measured and taken into account
+
 ---
+
+## 28 september 2026 - deciding how to collect
+
+### what i measured
+- the api has new positions every 5-10 seconds
+- sometimes a call returns *older* data than the call before (probably different servers). so i can't assume each call is newer
+- a single bus takes 20-40 seconds between stops in town, so calling every 30s would miss stops
+
+### what i found in the columns
+used a small `summary()` function on every dataset.
+- lots of columns are always empty (make, model, plate...)
+- some look full but aren't: capacity is 0 for every bus, wheelchair access is false for every stop. missing data doesn't always look missing
+- occupancy is `NO_DATA_AVAILABLE` for every bus, so no occupancy analysis
+- the arrivals endpoint isn't needed anymore: timetables come from the gtfs, real times from `/vehicles`
+
+### decisions
+- call `/vehicles` every 10 seconds
+- only save a position if that bus + timestamp hasn't been saved yet
+- save `collected_at` too, to know when the collection wasn't running
+- keep all columns in the raw data, pick the useful ones later
+- run it on my pc for now. gaps will be checked later with the poll log
+- also save the gtfs once a week and the trips run once a day
+- work in layers: raw -> clean (one row per bus passing a stop) -> star schema
+
+### next steps
+- [ ] run the collection and check the first files
+- [ ] write the notebook that turns positions into stop arrivals
 
 ## 28 september 2026 - the api doesn't record real arrival times
 
