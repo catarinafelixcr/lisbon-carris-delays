@@ -71,6 +71,15 @@ So bus `41|1217` is bus number 1217 of operator `LA77N`.
 
 Strip the prefixes (or add them) before joining, or nothing will match.
 
+
+**the same bus has three different ids depending on where you look:**
+
+| source | bus id |
+|---|---|
+| docs | `41\|1298` |
+| arrivals | `1298` |
+| vehicles | `[LA77N]1298` |
+
 ---
 
 ## 1. Arrivals at a stop (real time)
@@ -103,6 +112,8 @@ delay = observed_arrival_unix - scheduled_arrival_unix
 ```
 
 Positive = late. Negative = early.
+
+**update (28 sep):** `observed_arrival` is always empty in practice, so the formula above can't be used. live info (`estimated_arrival`, `trip_id`, `vehicle_id`) only shows up for buses arriving in the next hour or so, and disappears once they pass.
 
 ---
 
@@ -150,6 +161,34 @@ Validations aren't exactly passengers: people who don't tap their card aren't co
 GTFS is the worldwide standard for public transport timetables. The zip holds text files that work like tables in a database. The version I looked at is valid from 24 September 2026 to 30 June 2027.
 
 **Heads up:** unzipped it's almost 900 MB, and `stop_times.txt` alone has 9 million rows. Don't open it in Excel. Use pandas.
+
+## 5. vehicles (real time)
+
+**url:** `https://api.carrismetropolitana.pt/v2/vehicles`
+
+**one row = one bus in service right now.** around 1000 at 4pm on a weekday.
+
+| variable | what it means | example |
+|---|---|---|
+| `id` | operator + bus number | `[LA77N]1298` |
+| `line_id` | line | `1120` |
+| `trip_id` | trip it's doing | `[VNWG3][LA77N]1120_0_2_1630_1659_0_1` |
+| `stop_id` | depends on the status (see below) | `120754` |
+| `current_status` | where the bus is relative to the stop | `STOPPED_AT` |
+| `timestamp` | last position, in **milliseconds** | `1790610054000` |
+| `speed` | speed | `1` |
+| `lat`, `lon` | position | `38.697754` |
+| `occupancy_status`, `occupancy_estimated` | how full the bus is (not in the docs) | |
+
+the status follows the gtfs realtime standard:
+
+| status | meaning | `stop_id` is... |
+|---|---|---|
+| `IN_TRANSIT_TO` | on the way | the next stop |
+| `INCOMING_AT` | about to arrive | the stop it's arriving at |
+| `STOPPED_AT` | at the stop | the stop it's at |
+
+a bus might pass a stop without stopping if nobody's waiting, so the safest sign that it passed a stop is when `stop_id` changes.
 
 ### What's in the zip
 

@@ -6,6 +6,30 @@ I'm keeping this because the reasoning behind a decision is easy to forget, and 
 
 ---
 
+## 28 september 2026 - the api doesn't record real arrival times
+
+### what happened
+called the arrivals endpoint for oeiras station twice, two minutes apart.
+
+- `observed_arrival` was empty for every single row (202 of 202)
+- only buses coming in the next hour or so had live info
+- buses that passed between the two calls just disappeared. no observed time was saved
+- some estimates were 15+ min off when the bus was far away, and got better as it got closer
+
+so the arrivals endpoint works like a departures board: it shows what's coming, but nobody writes down when the bus actually passed.
+
+### what this means
+the original plan (delay = observed - scheduled) doesn't work. i need to record the real times myself.
+
+### new plan
+use the `/vehicles` endpoint. it gives every bus in service, its current stop and its status (in transit, incoming, stopped), in one call. checking it every 20-30 seconds and noting when each bus changes stop should give the real arrival times.
+
+this also means github actions won't work for collecting (it can't run that often). i'll need a machine that's always on.
+
+### next steps
+- [ ] follow one bus for a few minutes to check the idea works
+- [ ] decide where to run the collection
+
 ## 26 September 2026 - getting started
 
 ### Choosing the topic
