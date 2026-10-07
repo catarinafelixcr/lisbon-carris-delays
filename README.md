@@ -1,5 +1,5 @@
 # lisbon-carris-delays
-Predicting bus delays in the Lisbon Metropolitan Area with real-time open data
+Predicting bus delays in the Lisbon Metropolitan Area with real-time open data --- **it's not finished yet! i'm extracting data!!**
 
 ## Data source
 
